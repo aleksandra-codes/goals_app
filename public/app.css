@@ -1,0 +1,37 @@
+h1 {
+  color: purple;
+}
+
+li {
+  width: 500px;
+}
+
+li span {
+  /* float: right; */
+  /* color: red; */
+  transition: all 0.3s;
+  opacity: 0;
+  padding: 10px;
+  cursor: pointer;
+}
+
+li:hover span {
+  /* color: red; */
+  opacity: 0.85;
+}
+
+li span:hover {
+  opacity: 1;
+}
+
+.done p{
+  text-decoration: line-through;
+}
+
+.embedded-video {
+  max-width: 500px;
+}
+
+.current {
+  /* text-decoration:underline; */
+}
