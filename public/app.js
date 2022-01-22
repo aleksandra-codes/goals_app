@@ -11,9 +11,9 @@ $(document).ready(function () {
     }
   });
 
-  $(".list").on("click", "span", function (event) {
+  $(".list").on("click", ".delete_btn", function (event) {
     event.stopPropagation();
-    removeGoal($(this).parent());
+    removeGoal($(this).parent().parent());
   });
 
   $(".list").on("click", ".completed_btn", function (event) {
@@ -37,7 +37,7 @@ function appendGoal(goal) {
   var newGoal = $(
     "<li class='list-group-item d-flex justify-content-between align-items-center'><p>" +
       goal.goal +
-      "</p><div><button type='button' class='current_btn btn btn-primary btn-sm'>Current</button><button type='button' class='completed_btn btn btn-success btn-sm '>Completed</button> <span class='completed_span badge badge-danger badge-pill'>X</span></div></li>"
+      "</p><div><button type='button' class='current_btn btn btn-primary btn-sm ml-2'>Current</button><button type='button' class='completed_btn btn btn-success btn-sm ml-2'>Completed</button><button type='button' class='delete_btn btn btn-danger btn-sm ml-2'>Delete</button></div></li>"
   );
   newGoal.data("id", goal._id);
   newGoal.data("completed", goal.completed);
@@ -45,11 +45,13 @@ function appendGoal(goal) {
 
   if (goal.completed) {
     newGoal.addClass("done text-muted");
-  }
-  if (goal.current) {
+    $(".list-completed").append(newGoal);
+  } else if (goal.current) {
     newGoal.addClass("current text-primary");
+    $(".list-priority").append(newGoal);
+  } else {
+    $(".list-general").append(newGoal);
   }
-  $(".list").append(newGoal);
 }
 
 function addGoal() {
@@ -85,8 +87,6 @@ function toggleCompletedGoal(goal) {
   var isDone = !goal.data("completed");
   var isCurrent = !goal.data("current");
   if (!isDone & isCurrent) {
-    // completed is true, current false -- works
-    console.log("isDone = true, isCurrent = false");
     var updateData = { completed: isDone };
     $.ajax({
       method: "PUT",
@@ -101,8 +101,6 @@ function toggleCompletedGoal(goal) {
         console.log(err);
       });
   } else if (isDone & isCurrent) {
-    console.log("isDone = false, isCurrent = false");
-    // completed false, current false
     var updateData = { completed: isDone };
     $.ajax({
       method: "PUT",
@@ -116,10 +114,9 @@ function toggleCompletedGoal(goal) {
       .catch(function (err) {
         console.log(err);
       });
-  } else if (isDone & !isCurrent) {
+  } else {
     //completed false, current true
     //remove current styling
-    console.log("isDone = false, isCurrent = true");
     var updateData = { completed: isDone, current: isCurrent };
     $.ajax({
       method: "PUT",
@@ -135,8 +132,6 @@ function toggleCompletedGoal(goal) {
       .catch(function (err) {
         console.log(err);
       });
-  } else {
-    console.log("isDone = true, isCurrent = true!!!");
   }
 }
 
@@ -161,7 +156,7 @@ function setCurrentGoal(goal) {
       .catch(function (err) {
         console.log(err);
       });
-  } else if (isCurrent & !isDone){
+  } else if (isCurrent & !isDone) {
     var updateData = { current: isCurrent, completed: isDone };
     console.log("isCurrent = false, isDone = true");
     $.ajax({
@@ -178,7 +173,7 @@ function setCurrentGoal(goal) {
       .catch(function (err) {
         console.log(err);
       });
-  } else if(!isCurrent & isDone){
+  } else if (!isCurrent & isDone) {
     var updateData = { current: isCurrent };
     console.log("isCurrent = true, isDone = false");
     $.ajax({

@@ -7,8 +7,6 @@ li {
 }
 
 li span {
-  /* float: right; */
-  /* color: red; */
   transition: all 0.3s;
   opacity: 0;
   padding: 10px;
@@ -16,7 +14,6 @@ li span {
 }
 
 li:hover span {
-  /* color: red; */
   opacity: 0.85;
 }
 
@@ -24,7 +21,7 @@ li span:hover {
   opacity: 1;
 }
 
-.done p{
+.done p {
   text-decoration: line-through;
 }
 
